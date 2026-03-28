@@ -30,6 +30,7 @@ import type { Transaction } from "./backend";
 import { TransactionStatus, TransactionType } from "./backend";
 import { LoginPage, useAuth } from "./components/auth";
 import { useActor } from "./hooks/useActor";
+import { useIcrc1Balance } from "./hooks/useIcrc1Balance";
 import {
   useBalance,
   usePrincipal,
@@ -107,32 +108,6 @@ function Sparkline() {
     </svg>
   );
 }
-
-// ── Static asset data ──────────────────────────────────────────────────────
-
-const ASSETS = [
-  {
-    symbol: "ICP",
-    name: "Internet Computer",
-    amount: null,
-    usd: null,
-    color: "oklch(0.72 0.13 195)",
-  },
-  {
-    symbol: "ckBTC",
-    name: "Chain-key Bitcoin",
-    amount: 0.00412,
-    usd: 284.5,
-    color: "oklch(0.72 0.15 55)",
-  },
-  {
-    symbol: "ckETH",
-    name: "Chain-key Ethereum",
-    amount: 0.185,
-    usd: 612.3,
-    color: "oklch(0.6 0.12 280)",
-  },
-];
 
 // ── Transaction row component ─────────────────────────────────────────────────
 
@@ -505,6 +480,42 @@ export default function App() {
 
   const { data: balance, isLoading: balanceLoading } = useBalance();
   const { data: principal } = usePrincipal();
+  const principalStr = principal?.toString();
+  const { data: ckBtcRaw, isLoading: ckBtcLoading } = useIcrc1Balance(
+    "mxzaz-hqaaa-aaaar-qaada-cai",
+    principalStr,
+  );
+  const { data: ckEthRaw, isLoading: ckEthLoading } = useIcrc1Balance(
+    "ss2fx-dyaaa-aaaar-qacoq-cai",
+    principalStr,
+  );
+
+  const ASSETS = [
+    {
+      symbol: "ICP",
+      name: "Internet Computer",
+      balance: balance ?? 0,
+      isLoading: balanceLoading,
+      decimals: 4,
+      color: "oklch(0.72 0.13 195)",
+    },
+    {
+      symbol: "ckBTC",
+      name: "Chain-Key Bitcoin",
+      balance: (ckBtcRaw ?? 0) / 1e8,
+      isLoading: ckBtcLoading,
+      decimals: 8,
+      color: "oklch(0.72 0.15 55)",
+    },
+    {
+      symbol: "ckETH",
+      name: "Chain-Key Ethereum",
+      balance: (ckEthRaw ?? 0) / 1e18,
+      isLoading: ckEthLoading,
+      decimals: 6,
+      color: "oklch(0.67 0.15 280)",
+    },
+  ];
   const { data: transactions = [], isLoading: txLoading } = useTransactions();
   const seedMutation = useSeedDemoData();
   const toggleVisibility = useToggleVisibility();
@@ -852,17 +863,10 @@ export default function App() {
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-semibold text-foreground">
-                            {asset.symbol === "ICP"
-                              ? balanceLoading
-                                ? "..."
-                                : `${(balance ?? 0).toFixed(4)}`
-                              : asset.amount}
+                            {asset.isLoading
+                              ? "..."
+                              : `${asset.balance.toFixed(asset.decimals)}`}
                           </p>
-                          {asset.usd && (
-                            <p className="text-xs text-muted-foreground">
-                              ${asset.usd}
-                            </p>
-                          )}
                         </div>
                       </div>
                     ))}
@@ -1212,17 +1216,10 @@ export default function App() {
                       </div>
                     </div>
                     <p className="text-3xl font-bold text-foreground">
-                      {asset.symbol === "ICP"
-                        ? balanceLoading
-                          ? "..."
-                          : (balance ?? 0).toFixed(4)
-                        : asset.amount}
+                      {asset.isLoading
+                        ? "..."
+                        : asset.balance.toFixed(asset.decimals)}
                     </p>
-                    {asset.usd && (
-                      <p className="text-sm text-muted-foreground mt-1">
-                        ${asset.usd} USD
-                      </p>
-                    )}
                   </motion.div>
                 ))}
               </div>
@@ -1308,7 +1305,7 @@ export default function App() {
               <div>
                 <h1 className="text-2xl font-bold text-foreground">Support</h1>
                 <p className="text-muted-foreground text-sm mt-1">
-                  Get help with your Aether Wallet.
+                  Get help with your Dingo Wallet.
                 </p>
               </div>
 

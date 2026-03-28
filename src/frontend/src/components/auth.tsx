@@ -20,13 +20,37 @@ export function useAuth() {
   };
 }
 
+const SUPPORTED_ASSETS = [
+  {
+    ticker: "ICP",
+    name: "Internet Computer",
+    color: "oklch(0.72 0.13 195)",
+    bg: "oklch(0.72 0.13 195 / 0.12)",
+    border: "oklch(0.72 0.13 195 / 0.35)",
+  },
+  {
+    ticker: "ckBTC",
+    name: "Chain-Key Bitcoin",
+    color: "oklch(0.75 0.16 55)",
+    bg: "oklch(0.75 0.16 55 / 0.12)",
+    border: "oklch(0.75 0.16 55 / 0.35)",
+  },
+  {
+    ticker: "ckETH",
+    name: "Chain-Key Ethereum",
+    color: "oklch(0.68 0.14 300)",
+    bg: "oklch(0.68 0.14 300 / 0.12)",
+    border: "oklch(0.68 0.14 300 / 0.35)",
+  },
+];
+
 export function LoginPage() {
   const { login, isLoggingIn } = useAuth();
 
   const features = [
     { Icon: Shield, text: "End-to-end privacy controls" },
     { Icon: Lock, text: "Stealth send technology" },
-    { Icon: Wallet, text: "Non-custodial ICP wallet" },
+    { Icon: Wallet, text: "Non-custodial multi-asset wallet" },
   ];
 
   return (
@@ -113,10 +137,10 @@ export function LoginPage() {
             </div>
             <div>
               <div className="text-lg font-bold tracking-widest text-foreground">
-                AETHER WALLET
+                DINGO WALLET
               </div>
               <div className="text-xs text-muted-foreground">
-                ICP Privacy Wallet
+                Multi-Asset Privacy Wallet
               </div>
             </div>
           </div>
@@ -124,12 +148,12 @@ export function LoginPage() {
           <h1 className="text-2xl font-bold text-foreground mb-2">
             Welcome Back
           </h1>
-          <p className="text-muted-foreground text-sm mb-8">
-            Connect your identity to access your private ICP wallet. Your
+          <p className="text-muted-foreground text-sm mb-6">
+            Connect your identity to access your private wallet. Your
             transactions stay yours.
           </p>
 
-          <div className="space-y-3 mb-8">
+          <div className="space-y-3 mb-6">
             {features.map(({ Icon, text }) => (
               <div
                 key={text}
@@ -143,6 +167,39 @@ export function LoginPage() {
                 <span>{text}</span>
               </div>
             ))}
+          </div>
+
+          {/* Supported Assets */}
+          <div className="mb-8">
+            <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">
+              Supported Assets
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              {SUPPORTED_ASSETS.map((asset) => (
+                <div
+                  key={asset.ticker}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full"
+                  style={{
+                    background: asset.bg,
+                    border: `1px solid ${asset.border}`,
+                  }}
+                >
+                  <span
+                    className="w-2 h-2 rounded-full shrink-0"
+                    style={{ background: asset.color }}
+                  />
+                  <span
+                    className="text-xs font-bold tracking-wide"
+                    style={{ color: asset.color }}
+                  >
+                    {asset.ticker}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {asset.name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <Button
