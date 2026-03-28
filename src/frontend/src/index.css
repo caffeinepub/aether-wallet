@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    /* Dark crypto wallet palette */
+    --background: 0.11 0.008 240;
+    --foreground: 0.93 0.01 240;
+    --card: 0.14 0.01 240;
+    --card-foreground: 0.93 0.01 240;
+    --popover: 0.17 0.012 240;
+    --popover-foreground: 0.93 0.01 240;
+    --primary: 0.72 0.13 195;
+    --primary-foreground: 0.1 0.01 240;
+    --secondary: 0.19 0.012 240;
+    --secondary-foreground: 0.75 0.01 240;
+    --muted: 0.18 0.01 240;
+    --muted-foreground: 0.57 0.018 240;
+    --accent: 0.72 0.13 195;
+    --accent-foreground: 0.1 0.01 240;
+    --destructive: 0.62 0.2 20;
+    --destructive-foreground: 0.98 0 0;
+    --border: 0.25 0.015 240;
+    --input: 0.22 0.012 240;
+    --ring: 0.72 0.13 195;
+    /* Chart / special tokens */
+    --cyan: 0.72 0.13 195;
+    --orange: 0.65 0.15 50;
+    --green: 0.72 0.18 155;
+    --red: 0.62 0.2 20;
+    --chart-1: 0.72 0.13 195;
+    --chart-2: 0.65 0.15 50;
+    --chart-3: 0.72 0.18 155;
+    --chart-4: 0.62 0.2 20;
+    --chart-5: 0.55 0.1 280;
+    --sidebar: 0.12 0.008 240;
+    --sidebar-foreground: 0.93 0.01 240;
+    --sidebar-primary: 0.72 0.13 195;
+    --sidebar-primary-foreground: 0.1 0.01 240;
+    --sidebar-accent: 0.18 0.01 240;
+    --sidebar-accent-foreground: 0.93 0.01 240;
+    --sidebar-border: 0.25 0.015 240;
+    --sidebar-ring: 0.72 0.13 195;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", sans-serif;
+    background: radial-gradient(
+        ellipse at top left,
+        oklch(0.14 0.025 240) 0%,
+        oklch(0.09 0.01 240) 60%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        oklch(0.13 0.02 220) 0%,
+        oklch(0.08 0.008 250) 70%
+      );
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: oklch(0.12 0.008 240);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.28 0.015 240);
+    border-radius: 3px;
+  }
+}
+
+@layer utilities {
+  .glow-cyan {
+    box-shadow: 0 0 20px oklch(0.72 0.13 195 / 0.25), 0 0 40px
+      oklch(0.72 0.13 195 / 0.1);
+  }
+  .glow-orange {
+    box-shadow: 0 0 20px oklch(0.65 0.15 50 / 0.25), 0 0 40px
+      oklch(0.65 0.15 50 / 0.1);
+  }
+  .card-surface {
+    background: oklch(0.14 0.012 240 / 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.28 0.015 240);
+    border-radius: var(--radius);
+  }
+  .masked-text {
+    font-family: "Inter", sans-serif;
+    letter-spacing: 0.15em;
+    color: oklch(0.4 0.02 240);
+  }
+}
